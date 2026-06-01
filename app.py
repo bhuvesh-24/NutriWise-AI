@@ -5,7 +5,7 @@ API_KEY = st.secrets["GEMINI_API_KEY"]
 
 genai.configure(api_key=API_KEY)
 
-model = genai.GenerativeModel("gemini-2.5-flash")
+model = genai.GenerativeModel("gemini-2.5-flash-lite")
 # ==================================
 # PAGE CONFIG
 # ==================================
@@ -437,12 +437,12 @@ End with a short motivational message.
                     )
 
             except Exception as e:
-
-                st.error("An error occurred.")
-
-                st.code(str(e))
-
-                st.markdown("---")
+                if "429" in str(e):
+                    st.warning(
+                        "NutriWise AI is currently experiencing high usage. Please wait a few moments and try again."
+                    )
+                else:
+                    st.error(str(e))
 
 st.caption(
     "NutriWise AI • Powered by Google Gemini • Gen AI Academy APAC"
